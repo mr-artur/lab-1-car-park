@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title=#{title.driver.job})"></head>
+    <body class="bg-light">
+        <div class="container-fluid">
+            <div class="row">
+                <th:block th:replace="fragments::driver-menu(active='job', color='red')"/>
+                <th:block th:replace="fragments::languages"/>
+                <div class="container mt-5">
+                    <div class="alert alert-success mb-4" th:text="#{driver.assignmentAccepted}"
+                         th:if="${param.assignmentAccepted}"></div>
+                    <div class="justify-content-md-center shadow-lg p-5 mb-5 rounded text-center">
+                        <h2 th:if="${driver.bus == null}" th:text="#{driver.job.notFound}" class="mb-4"></h2>
+                        <h2 th:if="${driver.bus != null}" th:text="#{driver.job.label}" class="mb-4"></h2>
+                        <table th:if="${driver.bus != null}"
+                               class="table-striped table-responsive-lg table-bordered table-sm table-hover shadow rounded"
+                        >
+                            <thead>
+                                <tr>
+                                    <th th:text="#{drivers.table.bus}" class="text-center"></th>
+                                    <th th:text="#{drivers.table.route}" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="table_cell_row table_cell_row-bus">
+                                            <span th:text="${driver.bus.id}"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <th:block th:switch="${driver.bus.route == null}">
+                                            <th:block th:case="true">
+                                                <span th:text="#{driver.job.table.noRoute}"></span>
+                                            </th:block>
+                                            <th:block th:case="false">
+                                                <div class="table_cell_row">
+                                                    <span th:text="${driver.bus.route.number}"></span>
+                                                </div>
+                                            </th:block>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

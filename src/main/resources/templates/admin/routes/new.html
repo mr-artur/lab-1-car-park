@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title=#{title.routes.new})"></head>
+    <body class="bg-light">
+        <div class="container-fluid">
+            <div class="row">
+                <th:block th:replace="fragments::admin-menu(isSuperAdmin=${isSuperAdmin}, active='routes', color='pink')"/>
+                <th:block th:replace="fragments::languages"/>
+                <div class="container container-form mt-5">
+                    <div class="alert alert-success mb-4" th:text="#{routes.new.saved}" th:if="${param.saved}"></div>
+                    <div class="alert alert-danger mb-4" th:text="#{routes.new.duplicate}"
+                         th:if="${param.duplicate}"></div>
+                    <th:block th:replace="fragments::toPage(href='/admin/routes', name=#{link.allRoutes})" />
+                    <form action="#" th:action="@{/admin/routes/new}" th:object="${route}" method="post"
+                          class="form form-extended d-flex flex-column align-items-center p-4 shadow"
+                    >
+                        <h2 th:text="#{routes.new.label}" class="mb-4"></h2>
+                        <div class="form__element mb-3">
+                            <div class="input-group">
+                                <th:block th:replace="fragments::input-label(text=#{routes.new.label.number})"/>
+                                <input type="number"
+                                       th:field="*{number}"
+                                       min="1"
+                                       class="input form-control shadow-sm"
+                                       required
+                                       th:errorclass="input-error"
+                                />
+                            </div>
+                            <div class="alert alert-danger validation-error mt-2"
+                                 th:if="${#fields.hasErrors('number')}"
+                                 th:text="#{validation.route.number}">
+                            </div>
+                        </div>
+                        <button th:text="#{routes.new.button.submit}" type="submit" class="btn btn-success mb-4 mt-3"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

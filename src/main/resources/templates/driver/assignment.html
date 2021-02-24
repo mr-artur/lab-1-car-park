@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title=#{title.assignments})"></head>
+    <body class="bg-light">
+        <div class="container-fluid">
+            <div class="row">
+                <th:block th:replace="fragments::driver-menu(active='assignments', color='blue')"/>
+                <th:block th:replace="fragments::languages"/>
+                <div class="container mt-5">
+                    <div class="justify-content-md-center shadow-lg p-5 mb-5 rounded text-center">
+                        <h2 th:if="${notFound}" th:text="#{driver.assignment.notFound}"></h2>
+                        <table th:unless="${notFound}"
+                               class="table-striped table-responsive-lg table-bordered table-sm table-hover shadow rounded"
+                        >
+                            <thead>
+                                <tr>
+                                    <th th:text="#{assignments.table.driverFullName}" class="text-center"></th>
+                                    <th th:text="#{assignments.table.busNumber}" class="text-center"></th>
+                                    <th th:text="#{assignments.table.routeNumber}" class="text-center"></th>
+                                    <th th:text="#{assignments.table.initiatorFullName}" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span th:text="${assignment.driver.user.firstName}+' '+${assignment.driver.user.lastName}">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="table_cell_row table_cell_row-bus">
+                                            <span th:text="${assignment.bus.id}"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span th:if="${assignment.bus.route == null}"
+                                              th:text="#{driver.assignment.noRoute}">
+                                        </span>
+                                        <div th:unless="${assignment.bus.route == null}" class="table_cell_row">
+                                            <span th:text="${assignment.bus.route.number}"></span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span th:text="${assignment.initiator.firstName}+' '+${assignment.initiator.lastName}">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <form th:action="'/driver/assignments/accept/'+${assignment.id}" method="post">
+                                            <button th:text="#{assignments.button.accept}"
+                                                    class="btn btn-success">
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

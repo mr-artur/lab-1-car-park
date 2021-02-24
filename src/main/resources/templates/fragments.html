@@ -1,0 +1,204 @@
+<!-- Head tag | accepts: title -->
+<head th:fragment="head" xmlns:th="http://www.w3.org/1999/xhtml">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+
+    <!--Font 'Jura' -->
+    <link href="https://fonts.googleapis.com/css?family=Jura&display=swap" rel="stylesheet">
+
+    <!-- Font 'Monofett' -->
+    <link href="https://fonts.googleapis.com/css2?family=Monofett&display=swap" rel="stylesheet">
+
+    <!-- Additional styles -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Title -->
+    <title th:text="${title}">Car Park</title>
+</head>
+
+<!-- Admin And Super Admin menu | accepts: isSuperAdmin, color -->
+<nav th:fragment="admin-menu" class="d-none d-md-block bg-light sidebar shadow-sm mt-2"
+     xmlns:th="http://www.w3.org/1999/xhtml"
+>
+    <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+            <th:block th:replace="fragments::menu-label(color=${color})"/>
+            <th:block th:replace="fragments::menu-item(active=${active}, expected='buses', href='/admin/buses',
+                                                       icon='truck', text=#{menu.buses})"
+            />
+            <th:block th:replace="fragments::menu-item(active=${active}, expected='routes', href='/admin/routes',
+                                                       icon='git-commit', text=#{menu.routes})"
+            />
+            <th:block th:replace="fragments::menu-item(active=${active}, expected='drivers', href='/admin/drivers',
+                                                       icon='users', text=#{menu.drivers})"
+            />
+            <th:block th:replace="fragments::menu-item(active=${active}, expected='assignments',
+                                                       href='/admin/assignments', icon='feather',
+                                                       text=#{menu.assignments})"
+            />
+            <th:block th:if="${isSuperAdmin}">
+                <th:block th:replace="fragments::menu-item(active=${active}, expected='activate',
+                                                           href='/superadmin/activate', icon='user-check',
+                                                           text=#{menu.activate})"
+                />
+            </th:block>
+            <th:block th:replace="fragments::menu-logout"/>
+        </ul>
+    </div>
+    <th:block th:replace="fragments::icons-js"/>
+</nav>
+
+<!-- Driver menu | accepts: color -->
+<nav th:fragment="driver-menu" class="d-none d-md-block bg-light sidebar sidebar-driver shadow-sm mt-2"
+     xmlns:th="http://www.w3.org/1999/xhtml"
+>
+    <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+            <th:block th:replace="fragments::menu-label(color=${color})"/>
+            <th:block th:replace="fragments::menu-item(active=${active}, expected='home', href='/driver/home',
+                                                       icon='home', text=#{menu.home})"
+            />
+            <th:block th:replace="fragments::menu-item(active=${active}, expected='job', href='/driver/job',
+                                                       icon='briefcase', text=#{menu.job})"
+            />
+            <th:block th:replace="fragments::menu-item(active=${active}, expected='assignments',
+                                                       href='/driver/assignments', icon='pen-tool',
+                                                       text=#{menu.assignments})"
+            />
+            <th:block th:replace="fragments::menu-logout"/>
+        </ul>
+    </div>
+    <th:block th:replace="fragments::icons-js"/>
+</nav>
+
+<!-- Logout link for menu -->
+<li th:fragment="menu-logout" class="nav-item d-flex justify-content-center" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="nav-link">
+        <th:block th:replace="fragments::logout"/>
+    </div>
+</li>
+
+<!-- Company label for menu | accepts: color -->
+<h3 th:fragment="menu-label"
+    class="menu-label text-center mt-2"
+    th:classappend="${color+'-text'}"
+    xmlns:th="http://www.w3.org/1999/xhtml">
+    Car Park
+</h3>
+
+<!-- Menu item | accepts: active, expected, href, icon, text -->
+<li th:fragment="menu-item"
+    class="nav-item"
+    th:classappend="${active==expected} ? 'active shadow-sm' : ''"
+    xmlns:th="http://www.w3.org/1999/xhtml"
+>
+    <a class="nav-link" th:href=${href}>
+        <span class="mr-1" th:attrappend="data-feather=${icon}"></span>
+        <th:block th:text=${text}/>
+    </a>
+</li>
+
+<!-- Icons js activating -->
+<th:block th:fragment="icons-js" xmlns:th="http://www.w3.org/1999/xhtml">
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
+</th:block>
+
+<!-- Change language block -->
+<div th:fragment="languages" class="languages" xmlns:th="http://www.w3.org/1999/xhtml">
+    <button type="button" class="btn btn-primary btn-language" value="en">EN</button>
+    <button type="button" class="btn btn-secondary btn-language" value="ru">RU</button>
+
+    <!-- Change language script -->
+    <script type="text/javascript" src="/js/changeLanguage.js"></script>
+</div>
+
+<!-- Label for input in forms | accepts: text -->
+<th:block th:fragment="input-label" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="input-group-prepend shadow-sm">
+        <span class="form__element__label input-group-text" th:text="${text}"></span>
+    </div>
+</th:block>
+
+<!-- Logout button -->
+<a th:fragment="logout" href="/logout" class="logout" xmlns:th="http://www.w3.org/1999/xhtml">
+    <button th:text="#{link.logout}" type="button" class="btn btn-danger"></button>
+</a>
+
+<!-- Link to another page from history | accepts: href, name -->
+<a th:fragment="toPage"
+   th:href="${href}"
+   xmlns:th="http://www.w3.org/1999/xhtml"
+>
+    <button type="button" class="btn btn-info mb-3 mr-1" th:text="'<- ' + ${name}"></button>
+</a>
+
+<!-- Pagination | accepts: page, link, pageSize -->
+<div th:fragment="pagination" xmlns:th="http://www.w3.org/1999/xhtml" class="pagination-div mt-4">
+    <a th:if="${page.hasPrevious()}" class="previous"
+       th:href="${id == null} ?
+                @{${link}(page=${page.number-1},size=${page.size})} :
+                @{${link}(page=${page.number-1},size=${page.size},${idType}=${id})}"
+    >
+        <span>←</span>
+    </a>
+    <th:block th:switch="${page.getTotalPages() <= pageSize}">
+        <th:block th:case="true">
+            <th:block th:replace="fragments::pagination-pages-block(
+                sequence=${#numbers.sequence(0, page.totalPages - 1)},link=${link},idType=${idType},id=${id})"
+            />
+        </th:block>
+        <th:block th:case="false">
+            <th:block th:switch="${page.number < pageSize/2 + 1}">
+                <th:block th:case="true">
+                    <th:block th:replace="fragments::pagination-pages-block(
+                        sequence=${#numbers.sequence(0, pageSize-1)},link=${link},idType=${idType},id=${id})"
+                    />
+                </th:block>
+                <th:block th:case="false">
+                    <th:block th:switch="${page.number+pageSize/2+1>page.totalPages}">
+                        <th:block th:case="true">
+                            <th:block th:replace="fragments::pagination-pages-block(
+                                sequence=${#numbers.sequence(page.totalPages-pageSize, page.totalPages-1)},link=${link},
+                                idType=${idType},id=${id})"
+                            />
+                        </th:block>
+                        <th:block th:case="false">
+                            <th:block th:replace="fragments::pagination-pages-block(
+                                sequence=${#numbers.sequence(page.number-pageSize/2, page.number+pageSize/2)},
+                                link=${link},idType=${idType},id=${id})"
+                            />
+                        </th:block>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </th:block>
+    </th:block>
+    <a th:if="${page.hasNext()}" class="next"
+       th:href="${id == null} ?
+                @{${link}(page=${page.number+1},size=${page.size})} :
+                @{${link}(page=${page.number+1},size=${page.size},${idType}=${id})}"
+    >
+        <span>→</span>
+    </a>
+</div>
+
+<!-- Pagination pages block | accepts: sequence, link -->
+<th:block th:fragment="pagination-pages-block" xmlns:th="http://www.w3.org/1999/xhtml">
+    <th:block th:each="i: ${sequence}">
+        <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
+        <a th:unless="${page.number == i}"
+           th:href="${id == null} ?
+                    @{${link}(page=${i},size=${page.size})} :
+                    @{${link}(page=${i},size=${page.size},${idType}=${id})}"
+        >
+            <span>[[${i}+1]]</span>
+        </a>
+    </th:block>
+</th:block>

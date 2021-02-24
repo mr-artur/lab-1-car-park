@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title=#{title.routes})"></head>
+    <body class="bg-light">
+        <div class="container-fluid">
+            <div class="row">
+                <th:block th:replace="fragments::admin-menu(isSuperAdmin=${isSuperAdmin}, active='routes', color='red')"/>
+                <th:block th:replace="fragments::languages"/>
+                <div class="container mt-5">
+                    <div class="alert alert-success mb-4" th:text="#{routes.assignedBus}"
+                         th:if="${param.assignedBusToRoute}"></div>
+                    <div class="justify-content-md-center shadow-lg p-5 mb-5 rounded text-center">
+                        <h2 th:text="#{routes.label}" class="mb-4"></h2>
+                        <table class="table-striped table-responsive-lg table-bordered table-sm table-hover shadow rounded">
+                            <thead>
+                                <tr>
+                                    <th th:text="#{routes.table.index}" class="text-center"></th>
+                                    <th th:text="#{routes.table.number}" class="text-center"></th>
+                                    <th th:text="#{routes.table.busesCount}" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${page.getTotalElements() eq 0}">
+                                    <td th:text="#{routes.table.empty}" colspan="5"></td>
+                                </tr>
+                                <tr th:each="route : ${page.content}">
+                                    <td><span th:text="${routeStat.index + 1 + 5 * page.number}"></span></td>
+                                    <td><div class="table_cell_row"><span th:text="${route.number}"></span></div></td>
+                                    <td><span th:text="${route.buses.size()}"></span></td>
+                                    <td>
+                                        <th:block th:switch="${param.busId == null}">
+                                            <form th:case="false"
+                                                  th:action="'/admin/buses/'+${param.busId}+'/route/'+${route.id}+'?redirect=buses'"
+                                                  method="post"
+                                            >
+                                                <button th:text="#{routes.button.assign}" class="btn btn-primary">
+                                                </button>
+                                            </form>
+                                            <a th:case="true"
+                                               th:href="'/admin/buses/assign?routeId='+${route.id}">
+                                                <button th:text="#{routes.button.addBus}" class="btn btn-warning">
+                                                </button>
+                                            </a>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <th:block th:unless="${page.getTotalPages() < 2}">
+                            <th:block th:unless="${param.busId == null}">
+                                <th:block th:replace="fragments::pagination(page=${page},link='/admin/routes',pageSize=5,
+                                                                            idType='busId',id=${param.busId})"
+                                />
+                            </th:block>
+                            <th:block th:if="${param.busId == null}">
+                                <th:block th:replace="fragments::pagination(page=${page},link='/admin/routes',pageSize=5)"/>
+                            </th:block>
+                        </th:block>
+                        <div th:if="${param.busId == null}" class="row d-flex justify-content-center mt-5">
+                            <a href="/admin/routes/new">
+                                <button type="button" th:text="#{link.addRoute}" class="btn btn-success"></button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

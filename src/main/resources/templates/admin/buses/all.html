@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title=#{title.buses})"></head>
+    <body class="bg-light">
+        <div class="container-fluid">
+            <div class="row">
+                <th:block th:replace="fragments::admin-menu(isSuperAdmin=${isSuperAdmin}, active='buses', color='green')"/>
+                <th:block th:replace="fragments::languages"/>
+                <div class="container mt-5">
+                    <div class="alert alert-success mb-4" th:text="#{buses.assignedBusToRoute}"
+                         th:if="${param.assignedBusToRoute}"></div>
+                    <div class="alert alert-success mb-4" th:text="#{buses.unassignedDriver}"
+                         th:if="${param.unassignedDriverFromBus}"></div>
+                    <div class="alert alert-success mb-4" th:text="#{buses.driverToBusAssignmentOpened}"
+                         th:if="${param.driverToBusAssignmentOpened}"></div>
+                    <div class="alert alert-success mb-4" th:text="#{buses.unassignedFromRoute}"
+                         th:if="${param.unassignedBusFromRoute}"></div>
+                    <div class="justify-content-md-center shadow-lg p-5 mb-5 rounded text-center">
+                        <h2 th:text="#{buses.label}" class="mb-4"></h2>
+                        <table class="table-striped table-responsive-lg table-bordered table-sm table-hover shadow rounded">
+                            <thead>
+                                <tr>
+                                    <th th:text="#{buses.table.index}" class="text-center"></th>
+                                    <th th:text="#{buses.table.model}" class="text-center"></th>
+                                    <th th:text="#{buses.table.capacity}" class="text-center"></th>
+                                    <th th:text="#{buses.table.route}" class="text-center"></th>
+                                    <th th:text="#{buses.table.driver}" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${page.getTotalElements() eq 0}">
+                                    <td th:text="#{buses.table.empty}" colspan="5"></td>
+                                </tr>
+                                <tr th:each="bus : ${page.content}">
+                                    <td><span th:text="${bus.id}"></span></td>
+                                    <td><span th:text="${bus.model}"></span></td>
+                                    <td><span th:text="${bus.capacity}"></span></td>
+                                    <th:block th:switch="${bus.route == null}">
+                                        <th:block th:case="true">
+                                            <td>
+                                                <a th:href="'/admin/routes?busId='+${bus.id}">
+                                                    <button th:text="#{buses.button.addRoute}"
+                                                            class="btn btn-warning"></button>
+                                                </a>
+                                            </td>
+                                        </th:block>
+                                        <th:block th:case="false">
+                                            <td>
+                                                <div class="table_cell_row">
+                                                    <span th:text="${bus.route.number}"></span>
+                                                    <form th:action="'/admin/buses/'+${bus.id}+'/unassign?redirect=buses'"
+                                                          method="post"
+                                                    >
+                                                        <button th:text="#{buses.button.unassign}"
+                                                                class="btn btn-danger">
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </th:block>
+                                    </th:block>
+                                    <th:block th:switch="${bus.driver == null}">
+                                        <th:block th:case="true">
+                                            <td>
+                                                <th:block th:switch="${bus.assignment == null}">
+                                                    <a th:case="true"
+                                                       th:href="'/admin/drivers/assign?busId='+${bus.id}"
+                                                    >
+                                                        <button th:text="#{buses.button.addDriver}"
+                                                                class="btn btn-primary">
+                                                        </button>
+                                                    </a>
+                                                    <span th:case="false" th:text="#{buses.waitAssignment}"></span>
+                                                </th:block>
+                                            </td>
+                                        </th:block>
+                                        <th:block th:case="false">
+                                            <td>
+                                                <div class="table_cell_row table_cell_row-driver">
+                                                    <span th:text="${bus.driver.user.firstName}+' '+${bus.driver.user.lastName}">
+                                                    </span>
+                                                    <form th:action="'/admin/drivers/'+${bus.driver.id}+'/unassign?redirect=buses'"
+                                                          method="post"
+                                                    >
+                                                        <button th:text="#{buses.button.unassignDriver}"
+                                                                class="btn btn-danger">
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </th:block>
+                                    </th:block>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <th:block th:unless="${page.getTotalPages() < 2}">
+                            <th:block th:replace="fragments::pagination(page=${page},link='/admin/buses',pageSize=5)"/>
+                        </th:block>
+                        <div class="row d-flex justify-content-center mt-5">
+                            <a href="/admin/buses/new">
+                                <button type="button" th:text="#{link.addBus}" class="btn btn-success"></button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title=#{title.buses.assignToDriver})"></head>
+    <body class="bg-light">
+        <div class="container-fluid">
+            <div class="row">
+                <th:block th:replace="fragments::admin-menu(isSuperAdmin=${isSuperAdmin}, color='green')"/>
+                <th:block th:replace="fragments::languages"/>
+                <div class="container mt-5">
+                    <th:block th:replace="fragments::toPage(href='/admin/drivers',name=#{link.allDrivers})"/>
+                    <div class="justify-content-md-center shadow-lg p-5 mb-5 rounded text-center">
+                        <h2 th:text="#{buses.assignToDriver.label}" class="mb-4"></h2>
+                        <table class="table-striped table-responsive-lg table-bordered table-sm table-hover shadow rounded">
+                            <thead>
+                                <tr>
+                                    <th th:text="#{buses.table.index}" class="text-center"></th>
+                                    <th th:text="#{buses.table.model}" class="text-center"></th>
+                                    <th th:text="#{buses.table.capacity}" class="text-center"></th>
+                                    <th th:text="#{buses.table.route}" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${page.getTotalElements() eq 0}">
+                                    <td th:text="#{buses.assignToDriver.table.empty}" colspan="5"></td>
+                                </tr>
+                                <tr th:each="bus : ${page.content}">
+                                    <td><span th:text="${bus.id}"></span></td>
+                                    <td><span th:text="${bus.model}"></span></td>
+                                    <td><span th:text="${bus.capacity}"></span></td>
+                                    <td>
+                                        <th:block th:switch="${bus.route == null}">
+                                            <span th:case="true" th:text="#{buses.assignToDriver.noRoute}"></span>
+                                            <div th:case="false" class="table_cell_row">
+                                                <span th:text="${bus.route.number}"></span>
+                                            </div>
+                                        </th:block>
+                                    </td>
+                                    <td>
+                                        <form th:action="'/admin/assignments/driver/'+${driverId}+'/bus/'+${bus.id}+'?redirect=drivers'"
+                                              method="post">
+                                            <button th:text="#{buses.button.assign}" class="btn btn-primary"></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <th:block th:unless="${page.getTotalPages() < 2}">
+                            <th:block th:replace="fragments::pagination(page=${page},link='/admin/buses/assign',pageSize=5,
+                                                                    idType='driverId',id=${driverId})"
+                            />
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

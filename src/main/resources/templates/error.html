@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments::head(title=#{title.home})"></head>
+<body class="bg-light">
+<div class="container-fluid">
+    <div class="row">
+        <th:block th:replace="fragments::driver-menu(active='home', color='violet')"/>
+        <th:block th:replace="fragments::languages"/>
+        <div class="container mt-5">
+            <h2 th:text="#{error.somethingWrong}"></h2>
+            <img src="resources/images/homer-doh.png"/>
+            <a href="/success">
+                <button th:text="#{error.toHome}" class="btn btn-primary"></button>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

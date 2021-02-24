@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title=#{title.activate})"></head>
+    <body class="bg-light">
+        <div class="container-fluid">
+            <div class="row">
+                <th:block th:replace="fragments::admin-menu(isSuperAdmin=true, active='activate',color='violet')"/>
+                <th:block th:replace="fragments::languages"/>
+                <div class="container mt-5">
+                    <div class="alert alert-info mb-4" th:text="#{activate.activated}" th:if="${param.activated}"></div>
+                    <div class="alert alert-info mb-4" th:text="#{activate.deleted}" th:if="${param.deleted}"></div>
+                    <div class="justify-content-md-center shadow-lg p-5 mb-5 rounded text-center">
+                        <h2 th:text="#{activate.label}" class="mb-4"></h2>
+                        <table class="table-striped table-responsive-lg table-bordered table-sm table-hover shadow rounded">
+                            <thead>
+                                <tr>
+                                    <th th:text="#{activate.table.users.index}" class="text-center"></th>
+                                    <th th:text="#{activate.table.users.username}" class="text-center"></th>
+                                    <th th:text="#{activate.table.users.firstName}" class="text-center"></th>
+                                    <th th:text="#{activate.table.users.lastName}" class="text-center"></th>
+                                    <th th:text="#{activate.table.users.role}" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${page.getTotalElements() eq 0}">
+                                    <td th:text="#{activate.table.users.empty}" colspan="6"></td>
+                                </tr>
+                                <tr th:each="user : ${page.content}">
+                                    <td><span th:text="${userStat.index + 1 + 5 * page.number}"></span></td>
+                                    <td><span th:text="${user.username}"></span></td>
+                                    <td><span th:text="${user.firstName}"></span></td>
+                                    <td><span th:text="${user.lastName}"></span></td>
+                                    <td><span th:text="#{${user.role.getMessageKey()}}"></span></td>
+                                    <td>
+                                        <form th:action="'/superadmin/activate/'+${user.id}" method="post">
+                                            <button th:text="#{activate.button.activate}" class="btn btn-primary"></button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form th:action="'/superadmin/activate/reject/'+${user.id}" method="post">
+                                            <button th:text="#{activate.button.delete}" class="btn btn-danger"></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <th:block th:unless="${page.getTotalPages() < 2}">
+                            <th:block th:replace="fragments::pagination(page=${page},link='/superadmin/activate',pageSize=5)"/>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

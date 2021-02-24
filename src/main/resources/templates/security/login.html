@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title=#{title.login})"></head>
+    <body class="bg-light">
+        <th:block th:replace="fragments::languages"/>
+        <div class="container mt-5">
+            <div class="alert alert-danger mb-4" th:text="#{login.error}" th:if="${param.error}"></div>
+            <div class="alert alert-info mb-4" th:text="#{login.logout}" th:if="${param.logout}"></div>
+            <div class="alert alert-success mb-4" th:text="#{login.registered}" th:if="${param.registered}"></div>
+            <form method="post"
+                  class="form d-flex flex-column align-items-center p-4 shadow"
+            >
+                <h2 th:text="#{login.label}" class="mb-4"></h2>
+                <div class="form__element mb-3">
+                    <div class="input-group">
+                        <th:block th:replace="fragments::input-label(text=#{login.label.username})"/>
+                        <input type="text"
+                               class="input form-control shadow-sm"
+                               name="username"
+                               th:placeholder="#{login.placeholder.username}"
+                               required
+                        />
+                    </div>
+                </div>
+                <div class="form__element mb-4">
+                    <div class="input-group">
+                        <th:block th:replace="fragments::input-label(text=#{login.label.password})"/>
+                        <input type="password"
+                               class="input form-control shadow-sm"
+                               name="password"
+                               th:placeholder="#{login.placeholder.password}"
+                               required
+                        />
+                    </div>
+                </div>
+                <button th:text="#{login.button.submit}" type="submit" class="btn btn-success btn-form-login mb-4 mt-2">
+                </button>
+                <a href="/register">
+                    <button th:text="#{link.register}" type="button" class="btn btn-info btn-form-login"></button>
+                </a>
+            </form>
+        </div>
+    </body>
+</html>

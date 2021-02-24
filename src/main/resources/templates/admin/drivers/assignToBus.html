@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments::head(title=#{title.drivers.assignToBus})"></head>
+    <body class="bg-light">
+        <div class="container-fluid">
+            <div class="row">
+                <th:block th:replace="fragments::admin-menu(isSuperAdmin=${isSuperAdmin}, color='green')"/>
+                <th:block th:replace="fragments::languages"/>
+                <div class="container mt-5">
+                    <div class="justify-content-md-center shadow-lg p-5 mb-5 rounded text-center">
+                        <h2 th:text="#{drivers.assignToBus.label}" class="mb-4"></h2>
+                        <table class="table-striped table-responsive-lg table-bordered table-sm table-hover shadow rounded">
+                            <thead>
+                                <tr>
+                                    <th th:text="#{drivers.table.index}" class="text-center"></th>
+                                    <th th:text="#{drivers.table.username}" class="text-center"></th>
+                                    <th th:text="#{drivers.table.firstName}" class="text-center"></th>
+                                    <th th:text="#{drivers.table.lastName}" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:if="${page.getTotalElements() eq 0}">
+                                    <td th:text="#{drivers.assignToBus.table.empty}" colspan="5"></td>
+                                </tr>
+                                <tr th:each="driver : ${page.content}">
+                                    <td><span th:text="${driverStat.index + 1 + 5 * page.number}"></span></td>
+                                    <td><span th:text="${driver.user.username}"></span></td>
+                                    <td><span th:text="${driver.user.firstName}"></span></td>
+                                    <td><span th:text="${driver.user.lastName}"></span></td>
+                                    <td>
+                                        <form th:action="'/admin/assignments/driver/'+${driver.id}+'/bus/'+${busId}+'?redirect=buses'"
+                                              method="post"
+                                        >
+                                            <button th:text="#{drivers.button.assign}"
+                                                    class="btn btn-primary">
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <th:block th:unless="${page.getTotalPages() < 2}">
+                            <th:block th:replace="fragments::pagination(page=${page},link='/admin/drivers/assign',pageSize=5,
+                                                                    idType='busId',id=${busId})"
+                            />
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

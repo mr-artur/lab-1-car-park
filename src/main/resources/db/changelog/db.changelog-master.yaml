@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-v1.yaml
+  - changeSet:
+      id: 1
+      author: mr-artur
+      changes:
+        - addColumn:
+            tableName: buses
+            columns:
+              - column:
+                  name: year
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: state
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: routes
+            columns:
+              - column:
+                  name: id
+                  value: 555
+              - column:
+                  name: number
+                  value: 555

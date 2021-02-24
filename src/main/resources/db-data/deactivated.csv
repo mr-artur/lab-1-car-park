@@ -1,0 +1,6 @@
+First Name,First name native,Last name,Last name native,Username,Password,Role
+Zurab,Зураб,Myronov,Миронов,,1234567a,ROLE_DRIVER
+Khariton,Харитон,Ermakov,Ермаков,,1234567a,ROLE_DRIVER
+Nestor,Нестор,Tarasiuk,Тарасюк,,1234567a,ROLE_DRIVER
+Prohor,Прохор,Maltsev,Мальцев,,1234567a,ROLE_DRIVER
+Myroslav,Мирослав,Vorontsov,Воронцов,,1234567a,ROLE_ADMIN

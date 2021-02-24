@@ -1,0 +1,3 @@
+First Name,First name native,Last name,Last name native,Username,Password,Role
+Petro,Петр,Morozov,Морозов,petr.morozov,1234567a,ROLE_ADMIN
+Gennadiy,Геннадий,Vykhlyaev,Вихляев,gennadiy_vikhlyaev,1234567a,ROLE_ADMIN
